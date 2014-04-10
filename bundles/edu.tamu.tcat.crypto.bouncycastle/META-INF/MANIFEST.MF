@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Crypto
+Bundle-SymbolicName: edu.tamu.tcat.crypto.bouncycastle
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.tcat.citd.sim.util.crypto.internal.Activator
+Require-Bundle: org.eclipse.core.runtime
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: org.tcat.citd.sim.util.crypto
+Bundle-ClassPath: lib/bcprov-debug-jdk15on-149.jar,
+ .
+Import-Package: org.apache.commons.codec;version="[1.7.0,1.8.0)",
+ org.apache.commons.codec.binary;version="[1.7.0,1.8.0)"
