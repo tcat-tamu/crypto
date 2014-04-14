@@ -148,7 +148,7 @@ public class ASN1SeqKey
       }
    }
    
-   public static ASN1Sequence getParameters(ECParameterSpec ecParameterSpec) throws EncodingException
+   private static ASN1Sequence getParameters(ECParameterSpec ecParameterSpec) throws EncodingException
    {
       ASN1EncodableVector v = new ASN1EncodableVector();
       v.add(new ASN1Integer(1));
@@ -168,7 +168,7 @@ public class ASN1SeqKey
       return new DERSequence(v);
    }
    
-   public static DERBitString getPublic(java.security.interfaces.ECPrivateKey key) throws EncodingException
+   private static DERBitString getPublic(java.security.interfaces.ECPrivateKey key) throws EncodingException
    {
       BCECPrivateKey priv = (BCECPrivateKey)key;
       org.bouncycastle.math.ec.ECPoint g = priv.getParameters().getG();
