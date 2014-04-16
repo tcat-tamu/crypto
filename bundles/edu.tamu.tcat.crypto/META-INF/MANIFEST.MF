@@ -3,8 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Crypto
 Bundle-SymbolicName: edu.tamu.tcat.crypto
 Bundle-Version: 1.1.0.qualifier
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: edu.tamu.tcat.crypto;version="1.1.0",
