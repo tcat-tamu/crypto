@@ -2,7 +2,7 @@
 <feature
       id="edu.tamu.tcat.crypto.sdk.feature"
       label="CITD Crypto SDK"
-      version="1.1.0.qualifier"
+      version="1.1.1.qualifier"
       provider-name="Texas A&amp;M Engineering Experiment Station">
 
    <description url="http://www.example.com/description">
@@ -21,7 +21,7 @@
          id="edu.tamu.tcat.crypto"
          download-size="0"
          install-size="0"
-         version="1.1.0.qualifier"
+         version="1.1.1.qualifier"
          unpack="false"/>
 
    <plugin
@@ -35,7 +35,7 @@
          id="edu.tamu.tcat.crypto.bouncycastle"
          download-size="0"
          install-size="0"
-         version="1.1.0.qualifier"
+         version="1.1.1.qualifier"
          unpack="false"/>
 
    <plugin
