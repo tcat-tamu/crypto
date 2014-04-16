@@ -26,6 +26,7 @@
     <module>citd.crypto/releng/edu.tamu.tcat.crypto.repo.product</module>
     <module>citd.crypto/releng/edu.tamu.tcat.crypto.sdk.feature</module>
 
+    <module>citd.crypto/bundles/edu.tamu.tcat.crypto</module>
     <module>citd.crypto/bundles/edu.tamu.tcat.crypto.bouncycastle</module>
     
     <module>citd.crypto/tests/edu.tamu.tcat.crypto.bouncycastle.test</module>
