@@ -28,6 +28,7 @@
 
     <module>citd.crypto/bundles/edu.tamu.tcat.crypto</module>
     <module>citd.crypto/bundles/edu.tamu.tcat.crypto.bouncycastle</module>
+    <module>citd.crypto/bundles/edu.tamu.tcat.crypto.spongycastle</module>
     
     <module>citd.crypto/tests/edu.tamu.tcat.crypto.bouncycastle.test</module>
   </modules>
