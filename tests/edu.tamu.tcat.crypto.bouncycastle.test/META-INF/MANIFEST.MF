@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Test
 Bundle-SymbolicName: edu.tamu.tcat.crypto.bouncycastle.test
 Bundle-Version: 1.0.0.qualifier
-Fragment-Host: edu.tamu.tcat.crypto.bouncycastle;bundle-version="1.1.1"
+Fragment-Host: edu.tamu.tcat.crypto.bouncycastle;bundle-version="1.1.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.junit4;bundle-version="4.8.1",
  org.eclipse.core.runtime;bundle-version="3.7.0"
