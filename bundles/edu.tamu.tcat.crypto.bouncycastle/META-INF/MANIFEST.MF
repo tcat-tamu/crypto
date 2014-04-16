@@ -2,15 +2,15 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Crypto
 Bundle-SymbolicName: edu.tamu.tcat.crypto.bouncycastle
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 1.1.1.qualifier
 Bundle-Activator: edu.tamu.tcat.crypto.bouncycastle.internal.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: edu.tamu.tcat.crypto.bouncycastle;version="1.1.0"
+Export-Package: edu.tamu.tcat.crypto.bouncycastle;version="1.1.1"
 Bundle-ClassPath: lib/bcprov-debug-jdk15on-149.jar,
  .
-Import-Package: edu.tamu.tcat.crypto;version="1.1.0",
- edu.tamu.tcat.crypto.impl;version="1.1.0",
+Import-Package: edu.tamu.tcat.crypto;version="1.1.1",
+ edu.tamu.tcat.crypto.impl;version="1.1.1",
  org.apache.commons.codec;version="[1.7.0,1.8.0)",
  org.apache.commons.codec.binary;version="[1.7.0,1.8.0)",
  org.osgi.framework;version="1.7.0"
