@@ -15,13 +15,13 @@ import edu.tamu.tcat.crypto.X509KeyDecoder;
 public class BouncyCastleCryptoProvider implements CryptoProvider
 {
    @Override
-   public SecureToken geSecureToken(String hexKey) throws TokenException
+   public SecureToken getSecureToken(String hexKey) throws TokenException
    {
       return new SecureTokenImpl(hexKey);
    }
    
    @Override
-   public SecureToken geSecureToken(byte[] key) throws TokenException
+   public SecureToken getSecureToken(byte[] key) throws TokenException
    {
       return new SecureTokenImpl(key);
    }

@@ -2,9 +2,9 @@ package edu.tamu.tcat.crypto;
 
 public interface CryptoProvider
 {
-   SecureToken geSecureToken(String hexKey) throws TokenException;
+   SecureToken getSecureToken(String hexKey) throws TokenException;
    
-   SecureToken geSecureToken(byte[] key) throws TokenException;
+   SecureToken getSecureToken(byte[] key) throws TokenException;
    
    PBKDF2 getPbkdf2(DigestType digestType);
    
