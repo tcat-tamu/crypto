@@ -42,6 +42,11 @@ public class ECTest extends AsymmetricKeyTest
          "f3b9cac2fc63255102010103420004187c5df6c53bf739d2768cfc757e679d5e" +
          "3d017b8aadec03855430afd0fd028b6dd99ed629e6a95eb57b90dfcdc30be4b2" +
          "2677952d438900e4c37d7f5c74354d";
+   
+   private static final String ECSignature =
+         "3046022100e2d0f1fb3630f4f5524d43f9d4943d903775da0881ad53f26c1985" +
+         "8f45f70def022100d9439fa429bbee7a63fc9539beffa2474f8f3c6b3249a968" +
+         "a6fa620ca62b06ea";
 
    @Before
    public void setUp() throws Exception
@@ -75,6 +80,13 @@ public class ECTest extends AsymmetricKeyTest
       PrivateKey privateKey = provider.getAsn1SeqKey().decodePrivateKey("EC", privateKeyBytes);
       byte[] encoded = provider.getAsn1SeqKey().encodeKey(privateKey);
       assertArrayEquals(privateKeyBytes, encoded);
+   }
+   
+   @Test
+   public void testECVerify() throws Exception
+   {
+      PublicKey publicKey = provider.getX509KeyDecoder().decodePublicKey("EC", Hex.decode(ECPublicKey));
+      testVerify(publicKey, Hex.decode(ECSignature));
    }
 
    @Test

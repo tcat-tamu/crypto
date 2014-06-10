@@ -71,7 +71,7 @@ public class PBKDF2Impl extends BasicPBKDF2
       
       byte[] salt = Base64.decodeBase64(saltStr);
       byte[] output = Base64.decodeBase64(outputStr);
-      int outputSize = bouncyDigest.getDigestSize();
+      int outputSize = DigestTypeMap.getDigest(digest).getDigestSize();
       if (output.length != outputSize)
          return false;
       
