@@ -82,6 +82,7 @@ public abstract class BasicPBKDF2 implements PBKDF2
       
       String hashType = components[1];
       String roundsStr = components[2];
+      //NOTE: revert '.' to '+', which was previously converted to avoid issues with URL encoding of the derived hash (converting '+' to "%2B")
       String saltStr = components[3].replace('.', '+');
       String outputStr = components[4].replace('.', '+');
       

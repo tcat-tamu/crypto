@@ -78,6 +78,7 @@ public class SecureTokenImpl implements SecureToken
          byte[] iv = createIV();
          Cipher cipher = createCipher(Cipher.ENCRYPT_MODE, iv);
          int outputSize = cipher.getOutputSize(token.length);
+         // The token value returned contains the IV followed by the encrypted payload
          byte[] encrypted = new byte[outputSize + (ivSize / 8)];
          System.arraycopy(iv, 0, encrypted, 0, iv.length);
          cipher.doFinal(token, 0, token.length, encrypted, iv.length);
@@ -130,6 +131,9 @@ public class SecureTokenImpl implements SecureToken
       }
    }
    
+   /**
+    * Create an initialization vector from a {@link SecureRandom} for use with block chaining algorithms.
+    */
    private byte[] createIV()
    {
       SecureRandom random = new SecureRandom();

@@ -60,6 +60,10 @@ public class PBKDF2Impl extends BasicPBKDF2
       else
          hashType = "pbkdf2-" + digest.name().toLowerCase();
       byte[] output = deriveKey(password, salt, rounds, outputSize);
+      // Use "$" as separator between entries in the field. Returning a single string is helpful to store as a single
+      // value e.g. in a database table, but multiple pieces of information are required. The separator is used elsewhere, so is
+      // just as good as another field separator.
+      //NOTE: convert '+' to '.' to avoid issues with URL encoding of the derived hash (converting '+' to "%2B")
       return "$" + hashType + "$" + rounds + "$" + Base64.encodeBase64String(salt).replace('+', '.') + "$" + Base64.encodeBase64String(output).replace('+', '.');
    }
    
@@ -71,6 +75,8 @@ public class PBKDF2Impl extends BasicPBKDF2
       
       byte[] salt = Base64.decodeBase64(saltStr);
       byte[] output = Base64.decodeBase64(outputStr);
+      
+      //FIXME: should this instead be: 'DigestTypeMap.getDigest(digest).getDigestSize()' ?
       int outputSize = bouncyDigest.getDigestSize();
       if (output.length != outputSize)
          return false;
