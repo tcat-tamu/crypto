@@ -148,4 +148,15 @@ public class PBKDF2Test
       Assert.assertTrue(hash.startsWith("$pbkdf2-sha512$"));
       Assert.assertTrue(pbkdf2.checkHash("password", hash));
    }
+   
+   @Test
+   public void testCheckHashWithWrongPBKDF2()
+   {
+      PBKDF2 pbkdf2_512 = provider.getPbkdf2(DigestType.SHA512);
+      String hash = pbkdf2_512.deriveHash("password");
+      PBKDF2 pbkdf2_1 = provider.getPbkdf2(DigestType.SHA1);
+      Assert.assertTrue(pbkdf2_1.checkHash("password", hash));
+      hash = pbkdf2_1.deriveHash("password");
+      Assert.assertTrue(pbkdf2_512.checkHash("password", hash));
+   }
 }
