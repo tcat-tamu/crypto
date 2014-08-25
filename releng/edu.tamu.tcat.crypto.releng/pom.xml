@@ -56,6 +56,11 @@
       <layout>p2</layout>
       <url>${repo-base-url}/Eclipse.Repository.Mirror.Luna/lastSuccessfulBuild/artifact/target/repository</url>
     </repository>
+    <repository>
+      <id>Mirror.Deps</id>
+      <layout>p2</layout>
+      <url>${repo-base-url}/mirror.dependencies/lastSuccessfulBuild/artifact/targetPlatform/</url>
+    </repository>
   </repositories>
 
   <build>
