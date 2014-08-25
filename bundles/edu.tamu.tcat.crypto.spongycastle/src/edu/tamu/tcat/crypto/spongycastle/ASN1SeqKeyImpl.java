@@ -1,13 +1,18 @@
-/*******************************************************************************
- * Copyright © 2007-14, All Rights Reserved.
- * Texas Center for Applied Technology
- * Texas A&M Engineering Experiment Station
- * The Texas A&M University System
- * College Station, Texas, USA 77843
+/*
+ * Copyright 2014 Texas A&M Engineering Experiment Station
  *
- * Use is granted only to authorized licensee.
- * Proprietary information, not for redistribution.
- ******************************************************************************/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package edu.tamu.tcat.crypto.spongycastle;
 
@@ -62,7 +67,7 @@ public class ASN1SeqKeyImpl implements ASN1SeqKey
       {
          ECPrivateKey priv = ECPrivateKey.getInstance(encodedKey);
          ASN1Sequence parameters = (ASN1Sequence)priv.getParameters();
-         
+
          ASN1Integer version = (ASN1Integer)parameters.getObjectAt(0);
          if (version.getPositiveValue().intValue() != 1)
             throw new EncodingException("Only know how to decode version 1");
@@ -77,7 +82,7 @@ public class ASN1SeqKeyImpl implements ASN1SeqKey
          else
             throw new EncodingException("Only know how to decode prime fields");
          ASN1Sequence curveSeq = (ASN1Sequence)parameters.getObjectAt(2);
-         
+
          ASN1OctetString a = (ASN1OctetString)curveSeq.getObjectAt(0);
          ASN1OctetString b = (ASN1OctetString)curveSeq.getObjectAt(1);
          EllipticCurve curve;
@@ -88,13 +93,13 @@ public class ASN1SeqKeyImpl implements ASN1SeqKey
          }
          else
             curve = new EllipticCurve(field, getInteger(a.getOctets()), getInteger(b.getOctets()));
-         
+
          ASN1OctetString gEncoded = (ASN1OctetString)parameters.getObjectAt(3);
          ECPoint g = ECPointUtil.decodePoint(curve, gEncoded.getOctets());
          ASN1Integer n = (ASN1Integer)parameters.getObjectAt(4);
          ASN1Integer h = (ASN1Integer)parameters.getObjectAt(5);
          ECParameterSpec paramSpec = new ECParameterSpec(curve, g, n.getPositiveValue(), h.getPositiveValue().intValue());
-         
+
          ECPrivateKeySpec spec = new ECPrivateKeySpec(priv.getKey(), paramSpec);
          KeyFactory factory = KeyFactory.getInstance("EC", Activator.getDefault().getBouncyCastleProvider());
          PrivateKey key = factory.generatePrivate(spec);
@@ -105,7 +110,7 @@ public class ASN1SeqKeyImpl implements ASN1SeqKey
          throw new EncodingException("Failed decoding type [EC]", e);
       }
    }
-   
+
    private static BigInteger getInteger(byte[] bytes)
    {
       byte[] inner = new byte[bytes.length + 1];
@@ -113,7 +118,7 @@ public class ASN1SeqKeyImpl implements ASN1SeqKey
       System.arraycopy(bytes, 0, inner, 1, bytes.length);
       return new BigInteger(inner);
    }
-   
+
    @Override
    public byte[] encodeKey(PrivateKey key) throws EncodingException
    {
@@ -124,7 +129,7 @@ public class ASN1SeqKeyImpl implements ASN1SeqKey
       }
       throw new EncodingException("Don't know how to encode " + key);
    }
-   
+
    private static byte[] encodeECKey(java.security.interfaces.ECPrivateKey key) throws EncodingException
    {
       ASN1Sequence parameters = getParameters(key.getParams());
@@ -139,27 +144,27 @@ public class ASN1SeqKeyImpl implements ASN1SeqKey
          throw new EncodingException(e);
       }
    }
-   
+
    private static ASN1Sequence getParameters(ECParameterSpec ecParameterSpec) throws EncodingException
    {
       ASN1EncodableVector v = new ASN1EncodableVector();
       v.add(new ASN1Integer(1));
       EllipticCurve curve = ecParameterSpec.getCurve();
-      
+
       ASN1Sequence fieldId = getField(curve.getField());
       v.add(fieldId);
       v.add(getCurve(curve));
-      
+
       org.spongycastle.math.ec.ECPoint g = EC5Util.convertPoint(ecParameterSpec, ecParameterSpec.getGenerator(), false);
       byte[] encoded = g.getEncoded();
       v.add(new DEROctetString(encoded));
-      
+
       v.add(new ASN1Integer(ecParameterSpec.getOrder()));
       v.add(new ASN1Integer(ecParameterSpec.getCofactor()));
 
       return new DERSequence(v);
    }
-   
+
    private static DERBitString getPublic(java.security.interfaces.ECPrivateKey key) throws EncodingException
    {
       BCECPrivateKey priv = (BCECPrivateKey)key;
@@ -167,7 +172,7 @@ public class ASN1SeqKeyImpl implements ASN1SeqKey
       org.spongycastle.math.ec.ECPoint q = g.multiply(priv.getS());
       return new DERBitString(q.getEncoded());
    }
-   
+
    private static ASN1Sequence getField(ECField field) throws EncodingException
    {
       ASN1EncodableVector v = new ASN1EncodableVector();
@@ -179,20 +184,20 @@ public class ASN1SeqKeyImpl implements ASN1SeqKey
       }
       else
          throw new EncodingException("Only know how to encode prime fields");
-      
+
       return new DERSequence(v);
    }
 
    private static ASN1Sequence getCurve(EllipticCurve curve) throws EncodingException
    {
       ASN1EncodableVector v = new ASN1EncodableVector();
-      
+
       v.add(new DEROctetString(getInteger(curve.getA())));
       v.add(new DEROctetString(getInteger(curve.getB())));
       byte[] seed = curve.getSeed();
       if (seed != null)
          v.add(new DERBitString(seed));
-      
+
       return new DERSequence(v);
    }
 
