@@ -7,10 +7,27 @@
   <artifactId>citd.crypto</artifactId>
   <version>1</version>
   <packaging>pom</packaging>
-  <name>CITD Crypto</name>
+  
+  <name>TCAT Crypto</name>
+  
+  <organization>
+    <name>Texas Center for Applied Technology</name>
+    <url>http://tcat.tamu.edu</url>
+  </organization>
+  
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+      <comments></comments>
+    </license>
+  </licenses>
+  
   <prerequisites>
     <maven>3.0</maven>
   </prerequisites>
+  
   <properties>
     <tycho-groupid>org.eclipse.tycho</tycho-groupid>
     <tycho.showEclipseLog>false</tycho.showEclipseLog>
@@ -35,9 +52,9 @@
 
   <repositories>
     <repository>
-      <id>CITD RAP 2.x P2 Repository</id>
+      <id>Eclipse Luna</id>
       <layout>p2</layout>
-      <url>${repo-base-url}/CITD%20RAP%202.0%20Target%20Platform/lastSuccessfulBuild/artifact/targetPlatform</url>
+      <url>${repo-base-url}/Eclipse.Repository.Mirror.Luna/lastSuccessfulBuild/artifact/target/repository</url>
     </repository>
   </repositories>
 
@@ -54,16 +71,6 @@
         <artifactId>target-platform-configuration</artifactId>
         <version>${tycho-version}</version>
         <configuration>
-          <filters>
-            <!--
-            Need this filter for any project with a dependency on javax.servlet; see also equinox bug #348045
-            -->
-	         <filter>
-	            <type>p2-installable-unit</type>
-	            <id>org.eclipse.equinox.servletbridge.extensionbundle</id>
-	            <removeAll />
-	         </filter>
-	       </filters>
           <environments>
             <environment>
               <os>linux</os>
