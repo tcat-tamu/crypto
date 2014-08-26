@@ -6,9 +6,7 @@
       provider-name="Texas A&amp;M Engineering Experiment Station">
 
    <description>
-      The TCAT Crypto library provides an API wrapper around the bouncycastle ctryptography library along with various utility fucntions that are used within a variety of TCAT projects. 
-
-In general, applications should rely on a built version of the TCAT Crypto libraries and do not need to access the source for this SDK directly within their programing environments.
+      The TCAT Crypto library provides an API wrapper around the bouncycastle ctryptography library along with various utility fucntions that are used within a variety of TCAT projects. In general, applications should rely on a built version of the TCAT Crypto libraries and do not need to access the source for this SDK directly within their programing environments.
    </description>
 
    <copyright>

@@ -5,7 +5,7 @@
     <parent>
        <relativePath>../../../pom.xml</relativePath>
        <groupId>edu.tamu.tcat</groupId>
-       <artifactId>citd.crypto</artifactId>
+       <artifactId>crypto</artifactId>
        <version>1</version>
     </parent>
     
