@@ -1,10 +1,19 @@
 package edu.tamu.tcat.crypto.bouncycastle;
 
+import static org.junit.Assert.assertArrayEquals;
+
+import java.nio.ByteBuffer;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
 import org.bouncycastle.util.encoders.Base64;
 import org.junit.Test;
+
+import edu.tamu.tcat.crypto.AEADSymmetricCipher;
+import edu.tamu.tcat.crypto.DigestType;
+import edu.tamu.tcat.crypto.PBKDF2;
+import edu.tamu.tcat.crypto.SymmetricCipherBuilder.Cipher;
+import edu.tamu.tcat.crypto.SymmetricCipherBuilder.Mode;
 
 public class InteropTest extends AsymmetricKeyTest
 {
@@ -80,6 +89,66 @@ public class InteropTest extends AsymmetricKeyTest
       openSSl,
    };
    
+   private static class AccountKey {
+      public byte[] salt;
+      public int rounds;
+      public byte[] IV;
+      public byte[] encryptedData;
+      public byte[] tag;
+      public byte[] key;
+      public byte[] decryptedData;
+      public AccountKey(byte[] salt, int rounds, byte[] IV, byte[] encryptedData, byte[] tag, byte[] key, byte[] decryptedData)
+      {
+         super();
+         this.salt = salt;
+         this.rounds = rounds;
+         this.IV = IV;
+         this.encryptedData = encryptedData;
+         this.key = key;
+         this.decryptedData = decryptedData;
+      }
+      public AccountKey(String salt, int rounds, String IV, String encryptedData, String tag, String key, String decryptedData)
+      {
+         this(Base64.decode(salt), rounds, Base64.decode(IV), Base64.decode(encryptedData), Base64.decode(tag), Base64.decode(key), Base64.decode(decryptedData));
+      }
+   }
+   
+   private static final AccountKey exampleAccount = new AccountKey(
+         "2S+zYtwyBlp1C+ULFf/HGnBmCBPyeISqzATjANzYNkw=",
+         60240,
+         "4vKhQekdeehOUv9b",
+         "NFoqRuhIkYjGfocOpl6GsTBe0NpjNjED2YC3TCkVIv5faSB/qJJ5WCxq4fFsFA/d" +
+         "qxRG8rmfNJ1ECp+OYMjdg5AHqSI20g5DZXudHDX3IGYAJh4R85dl3OkH4UoUI7US" +
+         "Xca3aSxglXSsg2e5xtndfEg7iNl897vWPmDZp0YA3wTAUjyTQG+jgap+yFfsbgVN" +
+         "757tkBH0WHHCJGN5x3mMe20jJo5YmtXYhH3Hx2s2yW/INuTS4dGjmnn8dNXqp4BI" +
+         "UEO3dGtjafmMmqMTNuVSrB3j1IWH8iO4cnA/LHq20APZmlQD8Wqg6U9SeMDIl7U8" +
+         "KKedSRWNJRAApiNEPlIdxC24M4qdM/HZUV49TF4vD6J4a4/aEJqOOsEjE+v9Qrw4" +
+         "wcQQjZhtOvkEHcl1ntbRsTEq6KoBuIERnNw07kahkx6Jy0vCOQ9trWAUfe+jNmmZ" +
+         "Gv3HneGJ7fkx49SsyfxRLcnGc71FLfs4Y9FJ0JaMGyLDW43/uWWNm1e95RaYS6yj" +
+         "xcnIxFKANus26yh9MUoLrBFsrR+Ud5TDGmzA5yvTqGw9/jQ9sH1ICRXf3WlSOVM8" +
+         "xsnbFYKM7jd9qkyClQUh9V0Qgks8msDlXe45wOMTu2lHpOTyDOHU1dgb3UTNHrm8" +
+         "d4R5CLm5015Z+452LGFFJzxlEBS4Q/b/YIRMkupoov/XVxtKScrqvFjunnrO7Fsw" +
+         "VjybePdrOKTWpRjFmCF40kJzzw7b8lvBB+qWLoLpA1jkF28cFCydZK64yyqoJc7F" +
+         "nB3FOVFaq676diSHzF059V0hMG+JPNynY/ogzUYpedLITTXynoYUBp2gaknbdBXd" +
+         "pWwt9pbPUcPTTuPrYjcdtmy+Qc57870WeQSW2k3wzuSbuRPH+/1NmDM1r4q/JR+g",
+         "0jr/0hFFxOe+Xinmi0liBA==",
+         "2JhzbYrEJGzuWdCnZivoL1ggkxFQ6II+gRWPFortU7U=",
+         "MIICnAIBAQRBmpq5u0inm8ABOVkvkwZlcrvDq19pBgDJFwr2rjLe6seUBPsQj1eT" +
+         "lJ+csdIseXhnIooZ9ofLabIOFVAbWDlNNXqgggHGMIIBwgIBATBNBgcqhkjOPQEB" +
+         "AkIB////////////////////////////////////////////////////////////" +
+         "//////////////////////////8wgZ4EQgH/////////////////////////////" +
+         "/////////////////////////////////////////////////////////ARBUZU+" +
+         "uWGOHJofkpohoLaFQO6i2nJbmbMV87i0iZGO8QnhVhk5Uex+k3sWUsC9O7G/BzVz" +
+         "34g9LDTx70Uf1GtQPwADFQDQnogAKRy4U5bMZxc5MoSqoNpkugSBhQQAxoWOBrcE" +
+         "BOnNnj7LZiOVtEKcZIE5BT+1Ifgor2BrTT26oUted+/nWSj+HcEnov+o3jNIs8GF" +
+         "akKb+X5+McLlvWYBGDkpaniaO8AEXIpftCx9G9mY9URJV5tEaBevvRcnPmYsl+5y" +
+         "mV70JkDFULkBP60HYTU8cIaicsJAiL6Udp/RZlACQgH/////////////////////" +
+         "//////////////////////pRhoeDvy+Wa3/MAUj3CaXQO7XJuImcR667b7cekThk" +
+         "CQIBAaGBiQOBhgAEALPDBkt9EdkrAfxSwHZD/2nAebQ0ozwfB5uK1j8yO8tOxHFA" +
+         "uXe4iVzmnepGyF53blaQvzDLqmK1hZCodaAKFE0+AWNhxXeu8jRfTS30/MHKJmIT" +
+         "XuBbH/XXi9/3xml7u5rmIsGsXCoGmYT/5W87vqYIGNE="
+         );
+   
    @Test
    public void interoptTest() throws Exception
    {
@@ -90,5 +159,23 @@ public class InteropTest extends AsymmetricKeyTest
          testVerify(publicKey, Base64.decode(keySet.signature));
          testSign(privateKey, publicKey);
       }
+   }
+   
+   @Test
+   public void decryptTest() throws Exception
+   {
+      PBKDF2 pbkdf2 = provider.getPbkdf2(DigestType.SHA512);
+      byte[] key = pbkdf2.deriveKey("b", exampleAccount.salt, exampleAccount.rounds, 256 / 8);
+      assertArrayEquals(exampleAccount.key, key);
+      
+      AEADSymmetricCipher cipher = provider.getSymmetricCipherBuilder().buildAEADCipher(Cipher.AES256, Mode.GCM, false, key, exampleAccount.IV);
+      cipher.setMac(exampleAccount.tag);
+      ByteBuffer input = ByteBuffer.wrap(exampleAccount.encryptedData);
+      ByteBuffer output = ByteBuffer.allocate(cipher.getFinalSize(input.remaining()));
+      cipher.processData(input, output);
+      output.flip();
+      byte[] outBytes = new byte[output.remaining()];
+      output.get(outBytes);
+      assertArrayEquals(exampleAccount.decryptedData, outBytes);
    }
 }
