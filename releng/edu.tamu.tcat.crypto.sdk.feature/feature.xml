@@ -2,17 +2,19 @@
 <feature
       id="edu.tamu.tcat.crypto.sdk.feature"
       label="TCAT Crypto SDK"
-      version="2.0.0.qualifier"
+      version="2.0.1.qualifier"
       provider-name="Texas A&amp;M Engineering Experiment Station">
 
    <description>
-      The TCAT Crypto library provides an API wrapper around the bouncycastle ctryptography library along with various utility fucntions that are used within a variety of TCAT projects. 
-
-In general, applications should rely on a built version of the TCAT Crypto libraries and do not need to access the source for this SDK directly within their programing environments.
+      The TCAT Crypto library provides an API wrapper around the bouncycastle ctryptography library along with various utility fucntions that are used within a variety of TCAT projects. In general, applications should rely on a built version of the TCAT Crypto libraries and do not need to access the source for this SDK directly within their programing environments.
    </description>
 
    <copyright>
-      Copyright 2014 Texas A&amp;M Engineering Experiment Station
+      Copyright © 2014, All Rights Reserved.
+Texas Center for Applied Technology
+Texas A&amp;M Engineering Experiment Station
+1470 William D. Fitch Parkway
+College Station, Texas, USA 77845
    </copyright>
 
    <license url="http://www.apache.org/licenses/LICENSE-2.0">
@@ -63,7 +65,7 @@ limitations under the License.
          id="edu.tamu.tcat.crypto.spongycastle"
          download-size="0"
          install-size="0"
-         version="1.1.4.qualifier"
+         version="1.1.5.qualifier"
          unpack="false"/>
 
    <plugin

@@ -19,13 +19,10 @@ package edu.tamu.tcat.crypto.spongycastle.internal;
 import java.security.Provider;
 
 import org.spongycastle.jce.provider.BouncyCastleProvider;
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
 
-public class Activator implements BundleActivator {
+public class Activator{
 
 	private static Activator activator;
-   private static BundleContext bundleContext;
 
 	
 	/**
@@ -43,24 +40,13 @@ public class Activator implements BundleActivator {
 	private final Provider bouncyCastleProvider = new BouncyCastleProvider();
 
    public static Activator getDefault() {
-      return activator;
+	   if(activator == null)
+	   {
+		   activator = new Activator();
+	   }
+	   return activator;
    }
 
-   public static BundleContext getContext() {
-      return bundleContext;
-   }
-
-	@Override
-   public void start(BundleContext bundleContext) throws Exception {
-		Activator.bundleContext = bundleContext;
-      activator = this;
-	}
-
-	@Override
-   public void stop(BundleContext bundleContext) throws Exception {
-      Activator.bundleContext = null;
-	   activator = null;
-	}
 
    public Provider getBouncyCastleProvider()
    {
