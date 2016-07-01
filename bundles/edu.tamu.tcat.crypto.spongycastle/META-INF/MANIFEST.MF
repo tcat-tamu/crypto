@@ -1,12 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Crypto
+Bundle-Name: Spongy Castle Crypto
 Bundle-SymbolicName: edu.tamu.tcat.crypto.spongycastle
-Bundle-Version: 1.1.6.qualifier
+Bundle-Version: 1.1.7.qualifier
 Bundle-Activator: edu.tamu.tcat.crypto.spongycastle.internal.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: edu.tamu.tcat.crypto.spongycastle;version="1.1.6"
+Export-Package: edu.tamu.tcat.crypto.spongycastle;version="1.1.7",
+ edu.tamu.tcat.crypto.spongycastle.internal;version="1.1.7";x-internal:=true
 Bundle-ClassPath: .,
  libs/scprov-1.50.0.0.jar,
  libs/sccore-1.50.0.0.jar
