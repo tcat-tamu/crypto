@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.tamu.tcat</groupId>
-  <artifactId>crypto</artifactId>
+  <artifactId>oss.crypto</artifactId>
   <version>1</version>
   <packaging>pom</packaging>
   
@@ -31,23 +31,22 @@
   <properties>
     <tycho-groupid>org.eclipse.tycho</tycho-groupid>
     <tycho.showEclipseLog>false</tycho.showEclipseLog>
-    <tycho-version>0.21.0</tycho-version>
+    <tycho-version>0.25.0</tycho-version>
     <tycho-extras-version>${tycho-version}</tycho-extras-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <java.version>1.7</java.version>
     <repo-base-url>https://build.citd.tamu.edu/hudson/job</repo-base-url>
   </properties>
   
   <modules>
-    <module>citd.crypto/releng/edu.tamu.tcat.crypto.repo.product</module>
-    <module>citd.crypto/releng/edu.tamu.tcat.crypto.sdk.feature</module>
-
-    <module>citd.crypto/bundles/edu.tamu.tcat.crypto</module>
-    <module>citd.crypto/bundles/edu.tamu.tcat.crypto.bouncycastle</module>
-    <module>citd.crypto/bundles/edu.tamu.tcat.crypto.spongycastle</module>
-    
-    <module>citd.crypto/tests/edu.tamu.tcat.crypto.bouncycastle.test</module>
+    <module>releng/edu.tamu.tcat.crypto.repo.product</module>
+    <module>releng/edu.tamu.tcat.crypto.sdk.feature</module>
+            
+    <module>bundles/edu.tamu.tcat.crypto</module>
+    <module>bundles/edu.tamu.tcat.crypto.bouncycastle</module>
+    <module>bundles/edu.tamu.tcat.crypto.spongycastle</module>
+            
+    <module>tests/edu.tamu.tcat.crypto.bouncycastle.test</module>
   </modules>
 
   <repositories>
@@ -57,9 +56,9 @@
       <url>${repo-base-url}/Eclipse.Repository.Mirror.Luna/lastSuccessfulBuild/artifact/target/repository</url>
     </repository>
     <repository>
-      <id>Mirror.Deps</id>
+      <id>TCAT OSS Github</id>
       <layout>p2</layout>
-      <url>${repo-base-url}/mirror.dependencies/lastSuccessfulBuild/artifact/targetPlatform/</url>
+      <url>https://tcat-tamu.github.io/releng/p2/</url>
     </repository>
   </repositories>
 
@@ -80,7 +79,7 @@
             <environment>
               <os>linux</os>
               <ws>gtk</ws>
-              <arch>x86</arch>
+              <arch>x86_64</arch>
             </environment>
           </environments>
         </configuration>
