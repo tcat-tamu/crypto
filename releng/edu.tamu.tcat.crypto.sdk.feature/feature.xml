@@ -2,7 +2,7 @@
 <feature
       id="edu.tamu.tcat.crypto.sdk.feature"
       label="TCAT Crypto SDK"
-      version="2.0.2.qualifier"
+      version="2.0.3.qualifier"
       provider-name="Texas A&amp;M Engineering Experiment Station">
 
    <description>
@@ -37,42 +37,42 @@ limitations under the License.
          id="edu.tamu.tcat.crypto"
          download-size="0"
          install-size="0"
-         version="1.1.4.qualifier"
+         version="1.1.5.qualifier"
          unpack="false"/>
 
    <plugin
          id="edu.tamu.tcat.crypto.source"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.1.5.qualifier"
          unpack="false"/>
 
    <plugin
          id="edu.tamu.tcat.crypto.bouncycastle"
          download-size="0"
          install-size="0"
-         version="1.1.4.qualifier"
+         version="1.1.5.qualifier"
          unpack="false"/>
 
    <plugin
          id="edu.tamu.tcat.crypto.bouncycastle.source"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.1.5.qualifier"
          unpack="false"/>
 
    <plugin
          id="edu.tamu.tcat.crypto.spongycastle"
          download-size="0"
          install-size="0"
-         version="1.1.6.qualifier"
+         version="1.1.7.qualifier"
          unpack="false"/>
 
    <plugin
          id="edu.tamu.tcat.crypto.spongycastle.source"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.1.7.qualifier"
          unpack="false"/>
 
 </feature>
