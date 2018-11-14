@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature id="edu.tamu.tcat.crypto.sdk.feature" version="2.0.4.qualifier">
+   <feature id="edu.tamu.tcat.crypto.sdk.feature" version="2.0.5.qualifier">
       <category name="edu.tamu.tcat.crypto"/>
    </feature>
    <category-def name="edu.tamu.tcat.crypto" label="Crypto"/>
