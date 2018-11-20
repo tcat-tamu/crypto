@@ -29,11 +29,12 @@ public class InteropTest extends AsymmetricKeyTest
       }
    }
    
-   private static final KeySet spougyCastle = new KeySet(
+   private static final KeySet spongyCastle = new KeySet(
          "MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQApO8YOFXrgj+Yw9h8Ns56q3OFEyr4" +
          "5l96Wm2iU2fiqXSiCwL9ayo1/vX4cDlRqkRyTq6YLCPPi7n7hZFaMwfN9mcBxlXc" +
          "2kubiQSKCE+68+me01fgn2o9jxg9p84MJJnOR3jGoLoIUAdE2l8dq3JFSOGYQCCi" +
          "AWDpl6iwb8lL6QsQ9D8=",
+         
          "MIIChQIBAQRBSiAOyV42+cAa3uHy2R5u61GvXkMFdMeb7BNTGfF+u6L7fO79LP9s" +
          "nHJN/K/W4qA2bXSDR8ENki8RRva19hyuqp6gggGvMIIBqwIBATBNBgcqhkjOPQEB" +
          "AkIB////////////////////////////////////////////////////////////" +
@@ -48,10 +49,16 @@ public class InteropTest extends AsymmetricKeyTest
          "2Hw2znqrc4UTKvjmX3pabaJTZ+KpdKILAv1rKjX+9fhwOVGqRHJOrpgsI8+LufuF" +
          "kVozB832ZwHGVdzaS5uJBIoIT7rz6Z7TV+Cfaj2PGD2nzgwkmc5HeMagughQB0Ta" +
          "Xx2rckVI4ZhAIKIBYOmXqLBvyUvpCxD0Pw==",
+         
          "MIGIAkIBJChsFWymUGY3D8a475UlgZH4NKAqrvYg1MQKGC0GbjVGDjgNQMN1ypQj" +
          "jxT1obW8Yu7kk/tSmw1oPzpmfyO58x0CQgGZfK7JHhslL+iQJo0oMGWtVIEkh+ph" +
          "WqVHga2enZ8j5Uq+y74t+Et1LMJRSeaiRsgwXpCLsWmiYbMcMdAY5/uj8Q==");
    
+   /**
+    * signature generated with open ssl 1.0.2g
+    * openssl dgst -sha512 -sign ecprivkey.pem -out sign2.txt.sha512 phrase2.txt
+    * base64 sign2.txt.sha512 > sign2.txt.sha512.txt
+    * */
    private static final KeySet openSSl = new KeySet(
          "MIICXDCCAc8GByqGSM49AgEwggHCAgEBME0GByqGSM49AQECQgH/////////////" +
          "////////////////////////////////////////////////////////////////" +
@@ -66,6 +73,7 @@ public class InteropTest extends AsymmetricKeyTest
          "wou2jVvznc52TQY2WWGworzI/yy0xRUkDdUPOJnC98FZ1+ti1fiiF3f5B8307iEb" +
          "iDcIT9Rt81cLesjWG/IAZGItYtRFmKoCg0Ml9urEdBN1mW5OhqUSxJAkcPXnm1bC" +
          "sZSazgWwcl1QMfZWWSNFw8/FfbUgV82Ez/ozGlpdkhM=",
+         
          "MIICnAIBAQRBSOca0r30N55DifjFZd7PK6W1G4ZDyRVhoyo9gkiZjGUWdPb3i4NF" +
          "UxWITFoc9CcqXWZySDKxs9ayWdOEIytWGKGgggHGMIIBwgIBATBNBgcqhkjOPQEB" +
          "AkIB////////////////////////////////////////////////////////////" +
@@ -80,12 +88,18 @@ public class InteropTest extends AsymmetricKeyTest
          "CQIBAaGBiQOBhgAEASSQlcKLto1b853Odk0GNllhsKK8yP8stMUVJA3VDziZwvfB" +
          "WdfrYtX4ohd3+QfN9O4hG4g3CE/UbfNXC3rI1hvyAGRiLWLURZiqAoNDJfbqxHQT" +
          "dZluToalEsSQJHD155tWwrGUms4FsHJdUDH2VlkjRcPPxX21IFfNhM/6MxpaXZIT",
-         "MIGIAkIBm2yr+m9Mo9qAf4Zz7r5MMmXeg5Lp/BIQVkrmIFYuS35ST8hhcrPuwSCW" +
-         "cmDiMGg1Ct9FEYomxokncGhQjYef4hYCQgC5pXhe73+Sk4D+d0d/xkdpI0jCA7rL" +
-         "zWWHKHzZHMwy4y0AclYed7sg7JPikoA5zBdUrPTsfrafRvyF3IxHjDU5PAAA");
+
+         // signature of openssl 1.0.2 < g possibly d
+//         "MIGIAkIAy/xqiVaeo2iKP7ap4QFV4gNUcakrY6FGAqNx7MLzpwuwCnOjO1HhnrVLlzVfi+q1A91C" +
+//         "zlEl7nj7MznmdKNVis8CQgEiui4Et/qznqq4Gkj648vH2aTRdrbq15hBF75Q3uFC8Xfl66/7aGJ+" +
+//         "uD+MwSgHLoQQC0+X45+bYIfMMDjwTix0SA=="
+         "MIGGAkFfkXqu8cg44wTFA1Cl6UviYtW+Zkf630eW9I/uXUuQWtaWYatAM0wV62CtASt9iNJYIX6Y"+
+         "iEpzMllsOvb7oip5AQJBOxjQ+neWf1/xKDxYZTN/zetf/Azw99j5SjEd0vt7rAymbZZHS1k0m03+"+
+         "Znn576rvtKv+zdHSfg4xWEqp9lDRkuQ="
+		   );
    
    private static final KeySet[] sets = {
-      spougyCastle,
+      spongyCastle,
       openSSl,
    };
    
@@ -156,8 +170,8 @@ public class InteropTest extends AsymmetricKeyTest
       {
          PublicKey publicKey = provider.getX509KeyDecoder().decodePublicKey("EC", Base64.decode(keySet.publicKey));
          PrivateKey privateKey = provider.getAsn1SeqKey().decodePrivateKey("EC", Base64.decode(keySet.privateKey));
-         testVerify(publicKey, Base64.decode(keySet.signature));
          testSign(privateKey, publicKey);
+         testVerify(publicKey, Base64.decode(keySet.signature));
       }
    }
    
