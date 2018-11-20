@@ -90,17 +90,44 @@ public class InteropTest extends AsymmetricKeyTest
          "dZluToalEsSQJHD155tWwrGUms4FsHJdUDH2VlkjRcPPxX21IFfNhM/6MxpaXZIT",
 
          // signature of openssl 1.0.2 < g possibly d
-//         "MIGIAkIAy/xqiVaeo2iKP7ap4QFV4gNUcakrY6FGAqNx7MLzpwuwCnOjO1HhnrVLlzVfi+q1A91C" +
-//         "zlEl7nj7MznmdKNVis8CQgEiui4Et/qznqq4Gkj648vH2aTRdrbq15hBF75Q3uFC8Xfl66/7aGJ+" +
-//         "uD+MwSgHLoQQC0+X45+bYIfMMDjwTix0SA=="
-         "MIGGAkFfkXqu8cg44wTFA1Cl6UviYtW+Zkf630eW9I/uXUuQWtaWYatAM0wV62CtASt9iNJYIX6Y"+
-         "iEpzMllsOvb7oip5AQJBOxjQ+neWf1/xKDxYZTN/zetf/Azw99j5SjEd0vt7rAymbZZHS1k0m03+"+
-         "Znn576rvtKv+zdHSfg4xWEqp9lDRkuQ="
+         "MIGIAkIBm2yr+m9Mo9qAf4Zz7r5MMmXeg5Lp/BIQVkrmIFYuS35ST8hhcrPuwSCW" +
+         "cmDiMGg1Ct9FEYomxokncGhQjYef4hYCQgC5pXhe73+Sk4D+d0d/xkdpI0jCA7rL" +
+         "zWWHKHzZHMwy4y0AclYed7sg7JPikoA5zBdUrPTsfrafRvyF3IxHjDU5PA=="
+//         "MIGGAkFfkXqu8cg44wTFA1Cl6UviYtW+Zkf630eW9I/uXUuQWtaWYatAM0wV62CtASt9iNJYIX6Y"+
+//         "iEpzMllsOvb7oip5AQJBOxjQ+neWf1/xKDxYZTN/zetf/Azw99j5SjEd0vt7rAymbZZHS1k0m03+"+
+//         "Znn576rvtKv+zdHSfg4xWEqp9lDRkuQ="
+		   );
+   
+   /**
+    * signature generated with open ssl 1.0.2g
+    * 
+    * openssl ecparam -name secp160r1 -out secp160r1.pem
+    * openssl ecparam -in secp160r1.pem -genkey -noout -out secp160r1Priv.pem  -param_enc explicit
+    * openssl ec -in secp160r1Priv.pem -pubout -out secp160r1Pub.pem
+    * openssl dgst -sha512 -sign secp160r1Priv.pem -out sign.txt.sha512 phrase.txt
+    * base64 sign.txt.sha512 > sign.txt.sha512.txt
+    * */
+   private static final KeySet openSSl2 = new KeySet(
+         "MIHqMIG7BgcqhkjOPQIBMIGvAgEBMCAGByqGSM49AQECFQD/////////////////" + 
+         "////f////zBDBBT/////////////////////f////AQUHJe+/FS9eotlrPifgdTU" + 
+         "rcVl+kUDFQAQU83kLBTWluZ2h1YVF1M78/gzRQQpBEqWtWiO9XMoRmRpiWjDi7kT" + 
+         "y/yCI6YoVTFolH1Z3MkSBCNRN3rF+zICFQEAAAAAAAAAAAAB9Mj5J67TynUiVwIB" + 
+         "AQMqAAQ78mobb6MOj8ph9vexlWg9XBk9n6sc90vAjiCs60LVHy7iGa8xQN+V",
+         
+         "MIH8AgEBBBRaObWkRacF6vdKxcbV3GMmhvIrO6CBsjCBrwIBATAgBgcqhkjOPQEB" + 
+         "AhUA/////////////////////3////8wQwQU/////////////////////3////wE" + 
+         "FByXvvxUvXqLZaz4n4HU1K3FZfpFAxUAEFPN5CwU1pbmdodWFRdTO/P4M0UEKQRK" + 
+         "lrVojvVzKEZkaYlow4u5E8v8giOmKFUxaJR9WdzJEgQjUTd6xfsyAhUBAAAAAAAA" + 
+         "AAAAAfTI+Seu08p1IlcCAQGhLAMqAAQ78mobb6MOj8ph9vexlWg9XBk9n6sc90vA" + 
+         "jiCs60LVHy7iGa8xQN+V",
+
+         "MC0CFG4RZGubQCykAV7ho8seqmpO+TccAhUAzikEtFh6uVJdCUcCPj2Lrdh414w="
 		   );
    
    private static final KeySet[] sets = {
       spongyCastle,
       openSSl,
+      openSSl2,
    };
    
    private static class AccountKey {
