@@ -2,23 +2,25 @@
 <feature
       id="edu.tamu.tcat.crypto.sdk.feature"
       label="TCAT Crypto SDK"
-      version="2.0.5.qualifier"
+      version="2.0.4.qualifier"
       provider-name="Texas A&amp;M Engineering Experiment Station">
 
    <description>
-      The TCAT Crypto library provides an API wrapper around the bouncycastle ctryptography library along with various utility fucntions that are used within a variety of TCAT projects. In general, applications should rely on a built version of the TCAT Crypto libraries and do not need to access the source for this SDK directly within their programing environments.
+      The TCAT Crypto library provides an API wrapper around the bouncycastle
+      cryptography library along with various utility fucntions that are used
+      within a variety of TCAT projects.
    </description>
 
    <copyright>
-      Copyright 2014-2016, All Rights Reserved.
-Texas Center for Applied Technology
+      Copyright 2014-2019, All Rights Reserved.
+Texas A&amp;M Center for Applied Technology
 Texas A&amp;M Engineering Experiment Station
 1470 William D. Fitch Parkway
 College Station, Texas, USA 77845
    </copyright>
 
    <license url="http://www.apache.org/licenses/LICENSE-2.0">
-      Copyright 2014 Texas A&amp;M Engineering Experiment Station
+      Copyright 2014-2019 Texas A&amp;M Engineering Experiment Station
 
 Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
 you may not use this file except in compliance with the License.
@@ -51,28 +53,28 @@ limitations under the License.
          id="edu.tamu.tcat.crypto.bouncycastle"
          download-size="0"
          install-size="0"
-         version="1.2.1.dev"
+         version="1.3.0.dev"
          unpack="false"/>
 
    <plugin
          id="edu.tamu.tcat.crypto.bouncycastle.source"
          download-size="0"
          install-size="0"
-         version="1.2.1.dev"
+         version="1.3.0.dev"
          unpack="false"/>
 
    <plugin
          id="edu.tamu.tcat.crypto.spongycastle"
          download-size="0"
          install-size="0"
-         version="1.2.1.dev"
+         version="1.3.0.dev"
          unpack="false"/>
 
    <plugin
          id="edu.tamu.tcat.crypto.spongycastle.source"
          download-size="0"
          install-size="0"
-         version="1.2.1.dev"
+         version="1.3.0.dev"
          unpack="false"/>
 
 </feature>

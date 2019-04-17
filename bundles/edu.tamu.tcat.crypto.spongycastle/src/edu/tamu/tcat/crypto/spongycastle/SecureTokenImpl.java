@@ -1,12 +1,12 @@
 /*
- * Copyright 2014 Texas A&M Engineering Experiment Station
+ * Copyright 2014-2019 Texas A&M Engineering Experiment Station
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,6 +20,7 @@ import java.nio.ByteBuffer;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
 import java.security.SecureRandom;
 
 import javax.crypto.BadPaddingException;
@@ -30,9 +31,11 @@ import javax.crypto.ShortBufferException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.Hex;
+import org.spongycastle.util.Strings;
+import org.spongycastle.util.encoders.Base64;
+import org.spongycastle.util.encoders.Hex;
+import org.spongycastle.util.encoders.UrlBase64;
+import org.spongycastle.util.encoders.UrlBase64Encoder;
 
 import edu.tamu.tcat.crypto.SecureToken;
 import edu.tamu.tcat.crypto.TokenException;
@@ -41,39 +44,78 @@ import edu.tamu.tcat.crypto.spongycastle.internal.Activator;
 public class SecureTokenImpl implements SecureToken
 {
    private static final int ivSize = 128;  //Size in bits
-   
+
    private final SecretKeySpec key;
+   private final Provider provider;
 
    /**
     * Create a new token generator/parser using an encryption key.  This attempts to fail early by creating a cipher in the constructor.
     * @param hexKey The encryption key, hex encoded.  ATM, this uses AES, so 128, 194, or 256 bit
     * @throws TokenException Thrown if the key or IV are not properly base64 encoded or the cipher cannot otherwise be created.
     */
+   @Deprecated
    public SecureTokenImpl(String hexKey) throws TokenException
    {
+      provider = Activator.getDefault().getBouncyCastleProvider();
       try
       {
-         byte[] keyBytes = Hex.decodeHex(hexKey.toCharArray());
+         byte[] keyBytes = Hex.decode(hexKey);
          key = new SecretKeySpec(keyBytes, "AES");
          createCipher(Cipher.ENCRYPT_MODE, createIV());
       }
-      catch (DecoderException e)
+      catch (Exception e)
       {
          throw new TokenException("Invalid Key or IV", e);
       }
    }
-   
+
+   /**
+    * Create a new token generator/parser using an encryption key.  This attempts to fail early by creating a cipher in the constructor.
+    * @param hexKey The encryption key, hex encoded.  ATM, this uses AES, so 128, 194, or 256 bit
+    * @throws TokenException Thrown if the key or IV are not properly base64 encoded or the cipher cannot otherwise be created.
+    * @since 1.3
+    */
+   public SecureTokenImpl(String hexKey, Provider provider) throws TokenException
+   {
+      try
+      {
+         this.provider = provider;
+         byte[] keyBytes = Hex.decode(hexKey);
+         key = new SecretKeySpec(keyBytes, "AES");
+         createCipher(Cipher.ENCRYPT_MODE, createIV());
+      }
+      catch (Exception e)
+      {
+         throw new TokenException("Invalid Key or IV", e);
+      }
+   }
+
    /**
     * Create a new token generator/parser using an encryption key.  This attempts to fail early by creating a cipher in the constructor.
     * @param keyBytes The encryption key.  ATM, this uses AES, so 128, 194, or 256 bit
     * @throws TokenException Thrown if the key or IV are not properly base64 encoded or the cipher cannot otherwise be created.
     */
+   @Deprecated
    public SecureTokenImpl(byte[] keyBytes) throws TokenException
    {
+      provider = Activator.getDefault().getBouncyCastleProvider();
       key = new SecretKeySpec(keyBytes, "AES");
       createCipher(Cipher.ENCRYPT_MODE, createIV());
    }
-   
+
+   /**
+    * Create a new token generator/parser using an encryption key.  This attempts to fail early by creating a cipher in the constructor.
+    * @param keyBytes The encryption key.  ATM, this uses AES, so 128, 194, or 256 bit
+    * @throws TokenException Thrown if the key or IV are not properly base64 encoded or the cipher cannot otherwise be created.
+    * @since 1.3
+    */
+   public SecureTokenImpl(byte[] keyBytes, Provider provider) throws TokenException
+   {
+      this.provider = provider;
+      key = new SecretKeySpec(keyBytes, "AES");
+      createCipher(Cipher.ENCRYPT_MODE, createIV());
+   }
+
    @Override
    public String getToken(ByteBuffer content) throws TokenException
    {
@@ -83,10 +125,11 @@ public class SecureTokenImpl implements SecureToken
          byte[] iv = createIV();
          Cipher cipher = createCipher(Cipher.ENCRYPT_MODE, iv);
          int outputSize = cipher.getOutputSize(token.length);
+         // The token value returned contains the IV followed by the encrypted payload
          byte[] encrypted = new byte[outputSize + (ivSize / 8)];
          System.arraycopy(iv, 0, encrypted, 0, iv.length);
          cipher.doFinal(token, 0, token.length, encrypted, iv.length);
-         String encoded = Base64.encodeBase64URLSafeString(encrypted);
+         String encoded = Strings.fromByteArray(UrlBase64.encode(encrypted));
          return encoded;
       }
       catch (NoSuchAlgorithmException e)
@@ -106,13 +149,13 @@ public class SecureTokenImpl implements SecureToken
          throw new TokenException("Should never happen", e);
       }
    }
-   
+
    @Override
    public ByteBuffer getContentFromToken(String encoded) throws TokenException
    {
       try
       {
-         byte[] encrypted = Base64.decodeBase64(encoded.getBytes());
+         byte[] encrypted = Base64.decode(encoded.getBytes());
          byte[] iv = new byte[ivSize / 8];
          int ivLength = iv.length;
          if (encrypted.length < ivLength)
@@ -134,7 +177,10 @@ public class SecureTokenImpl implements SecureToken
          throw new TokenException("Bad Padding", e, true);
       }
    }
-   
+
+   /**
+    * Create an initialization vector from a {@link SecureRandom} for use with block chaining algorithms.
+    */
    private byte[] createIV()
    {
       SecureRandom random = new SecureRandom();
@@ -147,7 +193,7 @@ public class SecureTokenImpl implements SecureToken
    {
       try
       {
-         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding", Activator.getDefault().getBouncyCastleProvider());
+         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding", this.provider);
          cipher.init(mode, key, new IvParameterSpec(iv));
          return cipher;
       }
@@ -168,7 +214,7 @@ public class SecureTokenImpl implements SecureToken
          throw new TokenException("Missing algorithm", e);
       }
    }
-   
+
    private byte[] createToken(ByteBuffer content) throws NoSuchAlgorithmException
    {
       byte[] bytes = new byte[content.remaining()];
