@@ -4,9 +4,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,6 +22,7 @@ import org.spongycastle.crypto.Digest;
 import org.spongycastle.crypto.PBEParametersGenerator;
 import org.spongycastle.crypto.generators.PKCS5S2ParametersGenerator;
 import org.spongycastle.crypto.params.KeyParameter;
+import org.spongycastle.util.encoders.Base64;
 
 import edu.tamu.tcat.crypto.DigestType;
 import edu.tamu.tcat.crypto.impl.BasicPBKDF2;
@@ -57,7 +58,7 @@ public class PBKDF2Impl extends BasicPBKDF2
    @Override
    protected String deriveHash(byte[] password, int rounds, byte[] salt) {
       int outputSize = bouncyDigest.getDigestSize();
-      
+
       String hashType;
       if (digest == DigestType.SHA1)
          hashType = "pbkdf2";
@@ -68,21 +69,28 @@ public class PBKDF2Impl extends BasicPBKDF2
       // value e.g. in a database table, but multiple pieces of information are required. The separator is used elsewhere, so is
       // just as good as another field separator.
       //NOTE: convert '+' to '.' to avoid issues with URL encoding of the derived hash (converting '+' to "%2B")
-      return "$" + hashType + "$" + rounds + "$" + Base64.encodeBase64String(salt).replace('+', '.') + "$" + Base64.encodeBase64String(output).replace('+', '.');
+      return "$" + hashType + "$" + rounds + "$" + Base64.toBase64String(salt).replace('+', '.') + "$" + Base64.toBase64String(output).replace('+', '.');
    }
-   
+
    @Override
    protected boolean checkHash(byte[] password, String saltStr, String outputStr, DigestType digest, int rounds)
    {
-      if (!Base64.isBase64(saltStr) || !Base64.isBase64(outputStr))
+      byte[] salt;
+      byte[] output;
+      try
+      {
+         salt = Base64.decode(saltStr);
+         output = Base64.decode(outputStr);
+      }
+      catch (Exception e)
+      {
          return false;
-      
-      byte[] salt = Base64.decodeBase64(saltStr);
-      byte[] output = Base64.decodeBase64(outputStr);
+      }
+
       int outputSize = DigestTypeMap.getDigest(digest).getDigestSize();
       if (output.length != outputSize)
          return false;
-      
+
       PBKDF2Impl pbkdf2 = new PBKDF2Impl(digest);
       byte[] candidate = pbkdf2.deriveKey(password, salt, rounds, outputSize);
       return Arrays.equals(candidate, output);
