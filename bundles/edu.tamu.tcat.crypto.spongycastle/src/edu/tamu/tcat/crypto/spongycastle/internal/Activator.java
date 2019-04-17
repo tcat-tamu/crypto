@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Texas A&M Engineering Experiment Station
+ * Copyright 2014-2019 Texas A&M Engineering Experiment Station
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import java.security.Provider;
 
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
+@Deprecated
 public class Activator{
 
 	private static Activator activator;

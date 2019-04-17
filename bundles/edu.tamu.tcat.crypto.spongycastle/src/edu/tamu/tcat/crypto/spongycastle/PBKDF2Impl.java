@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Texas A&M Engineering Experiment Station
+ * Copyright 2014-2019 Texas A&M Engineering Experiment Station
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package edu.tamu.tcat.crypto.spongycastle;
 
 import java.util.Arrays;
 
-import org.apache.commons.codec.binary.Base64;
 import org.spongycastle.crypto.Digest;
 import org.spongycastle.crypto.PBEParametersGenerator;
 import org.spongycastle.crypto.generators.PKCS5S2ParametersGenerator;
@@ -65,6 +64,10 @@ public class PBKDF2Impl extends BasicPBKDF2
       else
          hashType = "pbkdf2-" + digest.name().toLowerCase();
       byte[] output = deriveKey(password, salt, rounds, outputSize);
+      // Use "$" as separator between entries in the field. Returning a single string is helpful to store as a single
+      // value e.g. in a database table, but multiple pieces of information are required. The separator is used elsewhere, so is
+      // just as good as another field separator.
+      //NOTE: convert '+' to '.' to avoid issues with URL encoding of the derived hash (converting '+' to "%2B")
       return "$" + hashType + "$" + rounds + "$" + Base64.encodeBase64String(salt).replace('+', '.') + "$" + Base64.encodeBase64String(output).replace('+', '.');
    }
    

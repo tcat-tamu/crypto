@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Texas A&M Engineering Experiment Station
+ * Copyright 2014-2019 Texas A&M Engineering Experiment Station
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package edu.tamu.tcat.crypto.spongycastle;
 
 import java.security.PrivateKey;
+import java.security.Provider;
 import java.security.PublicKey;
 import java.security.Signature;
 
@@ -30,6 +31,22 @@ import edu.tamu.tcat.crypto.spongycastle.internal.Activator;
 
 public class SignatureBuilderImpl implements SignatureBuilder
 {
+   private final Provider provider;
+
+   @Deprecated
+   public SignatureBuilderImpl()
+   {
+      this.provider = Activator.getDefault().getBouncyCastleProvider();
+   }
+
+   /**
+    * @since 1.3
+    */
+   public SignatureBuilderImpl(Provider provider)
+   {
+      this.provider = provider;
+   }
+
    @Override
    public SignatureSigner buildSigner(PrivateKey privateKey, DigestType digest) throws CipherException
    {
@@ -40,7 +57,7 @@ public class SignatureBuilderImpl implements SignatureBuilder
          {
             case "EC":
                String signatureType = digest.name() + "withECDSA";
-               Signature signature = Signature.getInstance(signatureType, Activator.getDefault().getBouncyCastleProvider());
+               Signature signature = Signature.getInstance(signatureType, this.provider);
                signature.initSign(privateKey);
                return new JavaSigner(signature);
             default:
@@ -67,7 +84,7 @@ public class SignatureBuilderImpl implements SignatureBuilder
          {
             case "EC":
                String signatureType = digest.name() + "withECDSA";
-               Signature signature = Signature.getInstance(signatureType, Activator.getDefault().getBouncyCastleProvider());
+               Signature signature = Signature.getInstance(signatureType, this.provider);
                signature.initVerify(publicKey);
                return new JavaVerifier(signature, signatureBytes);
             default:
