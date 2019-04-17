@@ -13,3 +13,4 @@ Bundle-ClassPath: .,
  lib/prov-1.58.0.0.jar
 Import-Package: edu.tamu.tcat.crypto;version="[1.1.0,2.0.0)",
  edu.tamu.tcat.crypto.impl;version="[1.1.0,2.0.0)"
+Bundle-Vendor: Texas A&M Engineering Experiment Station
