@@ -14,22 +14,22 @@ import edu.tamu.tcat.crypto.PBKDF2;
 public class PasswordHashTest
 {
    private CryptoProvider provider;
-   
+
    @Before
    public void getProvider()
    {
       provider = new BouncyCastleCryptoProvider();
    }
-   
-   @Ignore
+
+//   @Ignore
    @Test
    public void hashKnownPassword()
    {
       String password = "SetYourDesiredPasswordHere";
       printHash(password);
    }
-   
-   @Ignore
+
+//   @Ignore
    @Test
    public void hashNewPassword()
    {
@@ -54,7 +54,7 @@ public class PasswordHashTest
          passwordDomain[i + symbols.length + 26 * 2] = digit;
          digit++;
       }
-      
+
       int length = 24;  //Set your desired password length here
       StringBuilder buffer = new StringBuilder();
       Random random = new SecureRandom();
@@ -64,7 +64,7 @@ public class PasswordHashTest
          buffer.append(passwordDomain[index]);
       }
       String password = buffer.toString();
-      
+
       printHash(password);
    }
 

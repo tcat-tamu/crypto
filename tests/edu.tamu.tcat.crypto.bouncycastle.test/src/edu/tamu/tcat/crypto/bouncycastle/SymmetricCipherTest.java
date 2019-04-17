@@ -10,6 +10,7 @@ import java.security.PrivateKey;
 import java.util.Arrays;
 import java.util.Base64;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Hex;
 import org.junit.After;
 import org.junit.Before;
@@ -37,7 +38,9 @@ public class SymmetricCipherTest
    @Before
    public void getProvider()
    {
-      provider = new BouncyCastleCryptoProvider();
+      BouncyCastleCryptoProvider bccp = new BouncyCastleCryptoProvider();
+      bccp.setProvider(new BouncyCastleProvider());
+      provider = bccp;
    }
 
    @Before
@@ -156,7 +159,7 @@ public class SymmetricCipherTest
       assertArrayEquals(pt, output);
    }
 
-   @Ignore
+//   @Ignore
    @Test
    //Used to perform a decryption operation and use result elsewhere.
    public void decrypt() throws Exception
@@ -191,7 +194,7 @@ public class SymmetricCipherTest
       System.out.println("The key is [" + Base64.getEncoder().encodeToString(output) + ']');
    }
 
-   @Ignore
+//   @Ignore
    @Test
    //Used to perform a signature operation and use result elsewhere.
    public void doASignature() throws Exception
