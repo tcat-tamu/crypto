@@ -5,7 +5,7 @@ Bundle-SymbolicName: edu.tamu.tcat.crypto.bouncycastle
 Bundle-Version: 1.2.1.dev
 Bundle-Activator: edu.tamu.tcat.crypto.bouncycastle.internal.Activator
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: edu.tamu.tcat.crypto.bouncycastle;version="1.2.0"
 Bundle-ClassPath: .,
  lib/bcprov-debug-jdk15on-160.jar,
