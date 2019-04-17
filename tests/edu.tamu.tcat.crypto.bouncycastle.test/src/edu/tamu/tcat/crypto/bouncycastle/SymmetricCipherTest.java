@@ -8,8 +8,8 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.security.PrivateKey;
 import java.util.Arrays;
+import java.util.Base64;
 
-import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.util.encoders.Hex;
 import org.junit.After;
 import org.junit.Before;
@@ -33,13 +33,13 @@ public class SymmetricCipherTest
    @Rule
    public ExpectedException exception = ExpectedException.none();
    private CryptoProvider provider;
-   
+
    @Before
    public void getProvider()
    {
       provider = new BouncyCastleCryptoProvider();
    }
-   
+
    @Before
    public void setUp() throws Exception
    {
@@ -49,7 +49,7 @@ public class SymmetricCipherTest
    public void tearDown() throws Exception
    {
    }
-   
+
    @Test
    public void testAESEncryption() throws CipherException
    {
@@ -57,18 +57,18 @@ public class SymmetricCipherTest
       byte[] iv = Hex.decode("000102030405060708090A0B0C0D0E0F");
       byte[] pt = Hex.decode("6bc1bee22e409f96e93d7e117393172a");
       byte[] ct = Hex.decode("7649abac8119b246cee98e9b12e9197d");
-      
+
       SymmetricCipher encryption = provider.getSymmetricCipherBuilder().buildCipher(Cipher.AES128, Mode.CBC, true, key, iv);
       int outputLength = encryption.getFinalSize(pt.length);
       ByteBuffer output = ByteBuffer.allocate(outputLength);
       encryption.processData(ByteBuffer.wrap(pt), output);
       encryption.processFinal(output);
-      
+
       //We are cutting off to the expected length due to padding since the test vector does not use padding
       byte[] newOutput = new byte[ct.length];
       System.arraycopy(output.array(), 0, newOutput, 0, ct.length);
       assertArrayEquals(ct, newOutput);
-      
+
       ByteBuffer encrypted = output;
       encrypted.flip();
       SymmetricCipher decryption = provider.getSymmetricCipherBuilder().buildCipher(Cipher.AES128, Mode.CBC, false, key, iv);
@@ -86,18 +86,18 @@ public class SymmetricCipherTest
       byte[] iv = Hex.decode("000102030405060708090A0B0C0D0E0F");
       byte[] pt = Hex.decode("6bc1bee22e409f96e93d7e117393172a");
       byte[] ct = Hex.decode("f58c4c04d6e5f1ba779eabfb5f7bfbd6");
-      
+
       SymmetricCipher encryption = provider.getSymmetricCipherBuilder().buildCipher(Cipher.AES128, Mode.CBC, true, key, iv);
       int outputLength = encryption.getFinalSize(pt.length);
       ByteBuffer output = ByteBuffer.allocate(outputLength);
       encryption.processData(ByteBuffer.wrap(pt), output);
       encryption.processFinal(output);
-      
+
       //We are cutting off to the expected length due to padding since the test vector does not use padding
       byte[] newOutput = new byte[ct.length];
       System.arraycopy(output.array(), 0, newOutput, 0, ct.length);
       assertArrayEquals(ct, newOutput);
-      
+
       ByteBuffer encrypted = output;
       encrypted.flip();
       SymmetricCipher decryption = provider.getSymmetricCipherBuilder().buildCipher(Cipher.AES128, Mode.CBC, false, key, iv);
@@ -107,7 +107,7 @@ public class SymmetricCipherTest
       decryption.processFinal(output);
       assertEquals(ByteBuffer.wrap(pt), output.flip());
    }
-   
+
    @Test
    public void testAES256GCM() throws CipherException
    {
@@ -117,7 +117,7 @@ public class SymmetricCipherTest
       byte[] pt = Hex.decode("f56e87055bc32d0eeb31b2eacc2bf2a5");
       byte[] tag = Hex.decode("67ba0510262ae487d737ee6298f77e0c");
       byte[] ct = Hex.decode("f7264413a84c0e7cd536867eb9f21736");
-      
+
       AEADSymmetricCipher encryption = provider.getSymmetricCipherBuilder().buildAEADCipher(Cipher.AES256, Mode.GCM, true, key, iv);
       encryption.processAADData(aad, 0, aad.length);
       int outputLength = encryption.getFinalSize(pt.length);
@@ -127,7 +127,7 @@ public class SymmetricCipherTest
       byte[] mac = encryption.getMac();
       assertArrayEquals(tag, mac);
       assertArrayEquals(ct, output);
-      
+
       AEADSymmetricCipher decryption = provider.getSymmetricCipherBuilder().buildAEADCipher(Cipher.AES256, Mode.GCM, false, key, iv);
       decryption.setMac(tag);
       decryption.processAADData(aad, 0, aad.length);
@@ -138,7 +138,7 @@ public class SymmetricCipherTest
       mac = decryption.getMac();
       assertArrayEquals(tag, mac);
       assertArrayEquals(pt, output);
-      
+
       byte[] badTag = new byte[tag.length];
       System.arraycopy(tag, 0, badTag, 0, tag.length);
       badTag[3] = 0x11; //Original is 0x10
@@ -148,23 +148,23 @@ public class SymmetricCipherTest
       outputLength = failDecryption.getFinalSize(ct.length);
       output = new byte[outputLength];
       offset = failDecryption.processData(ct, 0, ct.length, output, 0);
-      
+
       exception.expect(CipherException.class);
       failDecryption.processFinal(output, offset);
       mac = failDecryption.getMac();
       assertFalse(Arrays.equals(tag, mac));
       assertArrayEquals(pt, output);
    }
-   
+
    @Ignore
    @Test
    //Used to perform a decryption operation and use result elsewhere.
    public void decrypt() throws Exception
    {
       int rounds = 113636;
-      byte[] salt = Base64.decodeBase64("hpCnpDhUQS32uB/ddwjfhbJMC74Fqw38xtnUPGye6TM=");
-      byte[] IV = Base64.decodeBase64("5HDI9/rf0JKWcIls");
-      byte[] data = Base64.decodeBase64(
+      byte[] salt = Base64.getDecoder().decode("hpCnpDhUQS32uB/ddwjfhbJMC74Fqw38xtnUPGye6TM=");
+      byte[] IV = Base64.getDecoder().decode("5HDI9/rf0JKWcIls");
+      byte[] data = Base64.getDecoder().decode(
             "4lKMqSDqxhF5pJWrUQ6qFu767FrNR9wFTvfAYaTjnEK/BSTSx3Mbxmf1VWmOzb60" +
                   "XqRgptKcif6YBUiVDEppoNOngj/uXBLezubCpQKcvjpvZV6Mzbna+o55g91Vx+AK" +
                   "bTZS1x4zzJMfaLlnds94J7Bh/A41YNpfykcPFqEv7hayuy2FOCn4Aq3qKTibhwAc" +
@@ -179,7 +179,7 @@ public class SymmetricCipherTest
                   "bpK0BKI35KleyFqyaU3QLRCD6y51mrYH0y2fau20tr+t4VutRO8tGyB15RGnY4so" +
                   "7eBaeFS9H7l3kePWUuRH1ruTUYR0OAHBy7AWx7VUPjD9flsjz5GYQLf4nQlJZeDA" +
                   "nm4J1oMyfqiyu5Joxg5ND/6COqqEslS4LCIsZFXabN5ksQ8j1syJ98reJy48wZC2");
-      byte[] tag = Base64.decodeBase64("jlIGOgUsrjCiA3Kxl+gnMw==");
+      byte[] tag = Base64.getDecoder().decode("jlIGOgUsrjCiA3Kxl+gnMw==");
       PBKDF2 pbkdf2 = provider.getPbkdf2(DigestType.SHA512);
       byte[] key = pbkdf2.deriveKey("b", salt, rounds, 256 / 8);
       AEADSymmetricCipher decryption = provider.getSymmetricCipherBuilder().buildAEADCipher(Cipher.AES256, Mode.GCM, false, key, IV);
@@ -187,16 +187,16 @@ public class SymmetricCipherTest
       byte[] output = new byte[decryption.getFinalSize(data.length)];
       int offset = decryption.processData(data, 0, data.length, output, 0);
       decryption.processFinal(output, offset);
-      
-      System.out.println("The key is [" + Base64.encodeBase64String(output) + ']');
+
+      System.out.println("The key is [" + Base64.getEncoder().encodeToString(output) + ']');
    }
-   
+
    @Ignore
    @Test
    //Used to perform a signature operation and use result elsewhere.
-   public void doASigature() throws Exception
+   public void doASignature() throws Exception
    {
-      byte[] privateKeyBytes = Base64.decodeBase64(
+      byte[] privateKeyBytes = Base64.getDecoder().decode(
             "MIICnAIBAQRBSOca0r30N55DifjFZd7PK6W1G4ZDyRVhoyo9gkiZjGUWdPb3i4NF" +
             "UxWITFoc9CcqXWZySDKxs9ayWdOEIytWGKGgggHGMIIBwgIBATBNBgcqhkjOPQEB" +
             "AkIB////////////////////////////////////////////////////////////" +
@@ -216,7 +216,7 @@ public class SymmetricCipherTest
       SignatureSigner signer = provider.getSignatureBuilder().buildSigner(privateKey, DigestType.SHA512);
       signer.processData(signedMessage);
       byte[] signature = signer.processFinal();
-      System.out.println("The signature is [" + Base64.encodeBase64String(signature) + "]");
+      System.out.println("The signature is [" + Base64.getEncoder().encodeToString(signature) + "]");
    }
 
 }
