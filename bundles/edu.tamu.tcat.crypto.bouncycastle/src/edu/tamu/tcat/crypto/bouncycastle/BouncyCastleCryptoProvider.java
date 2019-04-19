@@ -36,9 +36,24 @@ public class BouncyCastleCryptoProvider implements CryptoProvider
 
    public BouncyCastleCryptoProvider()
    {
-      Activator activator = Activator.getDefault();
-      if (activator != null)
-         provider = activator.getBouncyCastleProvider();
+      this(true);
+   }
+
+   /**
+    * Instantiate without using the activator's provider. It is expected
+    * this instance will be initialized using {@link #setProvider(Provider)}
+    * after construction.
+    *
+    * @since 1.3
+    */
+   public BouncyCastleCryptoProvider(boolean useInternalProvider)
+   {
+      if (useInternalProvider)
+      {
+         Activator activator = Activator.getDefault();
+         if (activator != null)
+            provider = activator.getBouncyCastleProvider();
+      }
    }
 
    /**
