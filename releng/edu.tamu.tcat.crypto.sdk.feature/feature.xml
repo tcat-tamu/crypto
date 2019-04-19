@@ -39,14 +39,14 @@ limitations under the License.
          id="edu.tamu.tcat.crypto"
          download-size="0"
          install-size="0"
-         version="1.1.5.qualifier"
+         version="1.2.0.dev"
          unpack="false"/>
 
    <plugin
          id="edu.tamu.tcat.crypto.source"
          download-size="0"
          install-size="0"
-         version="1.1.5.qualifier"
+         version="1.2.0.dev"
          unpack="false"/>
 
    <plugin
