@@ -40,4 +40,5 @@ public interface SimpleCrypto
 
    KeyData makeKeyPair(String password, int keyLengthInBytes, int rounds);
 
+   SecureToken getSecureToken(byte[] key) throws TokenException;
 }

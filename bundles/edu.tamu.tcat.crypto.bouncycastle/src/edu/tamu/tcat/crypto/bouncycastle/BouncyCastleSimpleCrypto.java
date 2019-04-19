@@ -11,7 +11,9 @@ import edu.tamu.tcat.crypto.CipherException;
 import edu.tamu.tcat.crypto.DigestType;
 import edu.tamu.tcat.crypto.EncodingException;
 import edu.tamu.tcat.crypto.PBKDF2;
+import edu.tamu.tcat.crypto.SecureToken;
 import edu.tamu.tcat.crypto.SimpleCrypto;
+import edu.tamu.tcat.crypto.TokenException;
 import edu.tamu.tcat.crypto.SymmetricCipherBuilder.Cipher;
 import edu.tamu.tcat.crypto.SymmetricCipherBuilder.Mode;
 
@@ -30,6 +32,12 @@ public class BouncyCastleSimpleCrypto implements SimpleCrypto
    public void setProvider(BouncyCastleCryptoProvider provider)
    {
       this.provider = provider;
+   }
+
+   @Override
+   public SecureToken getSecureToken(byte[] key) throws TokenException
+   {
+      return provider.getSecureToken(key);
    }
 
    @Override
