@@ -44,7 +44,7 @@ public class BouncyCastleSimpleCrypto implements SimpleCrypto
    public byte[] deriveKey(String input, byte[] salt, int rounds, int keyLengthInBytes)
    {
       PBKDF2 pbkdf2 = provider.getPbkdf2(DigestType.SHA512);
-      byte[] key = pbkdf2.deriveKey(pbkdf2.passwordToBytes(input), salt, rounds, 32);
+      byte[] key = pbkdf2.deriveKey(pbkdf2.passwordToBytes(input), salt, rounds, keyLengthInBytes);
       return key;
    }
 
@@ -52,7 +52,7 @@ public class BouncyCastleSimpleCrypto implements SimpleCrypto
    public boolean verifyPassword(String password, byte[] salt, int rounds, int keyLengthInBytes, byte[] iv, byte[] tag, byte[] encryptedData)
    {
       PBKDF2 pbkdf2 = provider.getPbkdf2(DigestType.SHA512);
-      byte[] key = pbkdf2.deriveKey(password.getBytes(Charset.forName("UTF-8")), salt, rounds, 32);
+      byte[] key = pbkdf2.deriveKey(password.getBytes(Charset.forName("UTF-8")), salt, rounds, keyLengthInBytes);
 
       try
       {
