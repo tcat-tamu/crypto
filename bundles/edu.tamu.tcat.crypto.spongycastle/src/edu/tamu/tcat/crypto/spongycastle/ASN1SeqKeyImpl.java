@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Texas A&M Engineering Experiment Station
+ * Copyright 2014-2019 Texas A&M Engineering Experiment Station
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.Provider;
 import java.security.spec.ECField;
 import java.security.spec.ECFieldFp;
 import java.security.spec.ECParameterSpec;
@@ -49,19 +50,35 @@ import edu.tamu.tcat.crypto.spongycastle.internal.Activator;
 
 public class ASN1SeqKeyImpl implements ASN1SeqKey
 {
+   private final Provider provider;
+
+   @Deprecated
+   public ASN1SeqKeyImpl()
+   {
+      provider = Activator.getDefault().getBouncyCastleProvider();
+   }
+
+   /**
+    * @since 1.3
+    */
+   public ASN1SeqKeyImpl(Provider provider)
+   {
+      this.provider = provider;
+   }
+
    @Override
    public PrivateKey decodePrivateKey(String type, byte[] encodedKey) throws EncodingException
    {
       switch (type)
       {
          case "EC":
-            return decodeECKey(encodedKey);
+            return decodeECKey(encodedKey, provider);
          default:
             throw new EncodingException("Don't know how to decode a private key of type " + type);
       }
    }
 
-   private static PrivateKey decodeECKey(byte[] encodedKey) throws EncodingException
+   private static PrivateKey decodeECKey(byte[] encodedKey, Provider provider) throws EncodingException
    {
       try
       {
@@ -101,7 +118,7 @@ public class ASN1SeqKeyImpl implements ASN1SeqKey
          ECParameterSpec paramSpec = new ECParameterSpec(curve, g, n.getPositiveValue(), h.getPositiveValue().intValue());
 
          ECPrivateKeySpec spec = new ECPrivateKeySpec(priv.getKey(), paramSpec);
-         KeyFactory factory = KeyFactory.getInstance("EC", Activator.getDefault().getBouncyCastleProvider());
+         KeyFactory factory = KeyFactory.getInstance("EC", provider);
          PrivateKey key = factory.generatePrivate(spec);
          return key;
       }
