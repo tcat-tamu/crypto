@@ -21,7 +21,7 @@ public class PasswordHashTest
       provider = new BouncyCastleCryptoProvider();
    }
 
-//   @Ignore
+   @Ignore
    @Test
    public void hashKnownPassword()
    {
@@ -29,7 +29,7 @@ public class PasswordHashTest
       printHash(password);
    }
 
-//   @Ignore
+   @Ignore
    @Test
    public void hashNewPassword()
    {

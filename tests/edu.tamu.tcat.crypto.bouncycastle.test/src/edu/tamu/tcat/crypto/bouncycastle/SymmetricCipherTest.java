@@ -159,7 +159,7 @@ public class SymmetricCipherTest
       assertArrayEquals(pt, output);
    }
 
-//   @Ignore
+   @Ignore
    @Test
    //Used to perform a decryption operation and use result elsewhere.
    public void decrypt() throws Exception
@@ -194,7 +194,7 @@ public class SymmetricCipherTest
       System.out.println("The key is [" + Base64.getEncoder().encodeToString(output) + ']');
    }
 
-//   @Ignore
+   @Ignore
    @Test
    //Used to perform a signature operation and use result elsewhere.
    public void doASignature() throws Exception
