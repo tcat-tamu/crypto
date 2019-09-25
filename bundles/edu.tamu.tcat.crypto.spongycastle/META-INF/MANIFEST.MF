@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Spongy Castle Crypto
 Bundle-SymbolicName: edu.tamu.tcat.crypto.spongycastle
-Bundle-Version: 1.3.0.dev
+Bundle-Version: 1.3.0.qualifier
 Bundle-Activator: edu.tamu.tcat.crypto.spongycastle.internal.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
