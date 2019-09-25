@@ -3,6 +3,8 @@ package edu.tamu.tcat.crypto.bouncycastle;
 
 import static org.junit.Assert.assertArrayEquals;
 
+import java.util.Base64;
+
 import org.bouncycastle.util.encoders.Hex;
 import org.junit.After;
 import org.junit.Assert;
@@ -19,11 +21,13 @@ import edu.tamu.tcat.crypto.PBKDF2;
 public class PBKDF2Test
 {
    private CryptoProvider provider;
+   private BouncyCastleSimpleCrypto simple;
 
    @Before
    public void getProvider()
    {
       provider = new BouncyCastleCryptoProvider();
+      simple = new BouncyCastleSimpleCrypto((BouncyCastleCryptoProvider)provider);
    }
 
    @Before
@@ -62,6 +66,19 @@ public class PBKDF2Test
    public void test1Round()
    {
       testSha1("password", "salt", 1, 20, "0c60c80f961f0e71f3a9b524af6012062fe037a6");
+   }
+
+   @Test
+   public void test1RoundSimple()
+   {
+      byte[] saltBytes = "SALT".getBytes();
+      // salt bytes= [83, 65, 76, 84] b64 = "U0FMVa=="
+      byte[] derived = simple.deriveKey("1Password2", saltBytes, 1, 3);
+      // derived bytes= [-96, -72, -11] b64 = "oLj1"
+      String saltB64 = Base64.getEncoder().encodeToString(saltBytes);
+      String derivedB64 = Base64.getEncoder().encodeToString(derived);
+      System.out.println("s: " + saltB64 + " d:" +derivedB64);
+      Assert.assertEquals(derivedB64, "oLj1");
    }
 
    @Test
